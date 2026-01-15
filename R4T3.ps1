@@ -44,9 +44,9 @@ function Write-Log {
 
     # Exibir no console com cores
     switch ($Level) {
-        'Info'    { Write-Host $Message -ForegroundColor Cyan }
+        'Info' { Write-Host $Message -ForegroundColor Cyan }
         'Warning' { Write-Host $Message -ForegroundColor Yellow }
-        'Error'   { Write-Host $Message -ForegroundColor Red }
+        'Error' { Write-Host $Message -ForegroundColor Red }
         'Success' { Write-Host $Message -ForegroundColor Green }
     }
 }
@@ -96,6 +96,7 @@ function Install-WingetIfNeeded {
         }
         catch {
             Write-Log "Erro ao instalar Winget: $_" -Level Error
+            Write-Log "Por favor, instale o 'App Installer' manualmente pela Microsoft Store ou GitHub." -Level Warning
             return $false
         }
     }
@@ -144,15 +145,15 @@ function Show-SoftwareMenu {
         }
 
         switch ($choice) {
-            "1"  { Install-Software -Name "Google Chrome" -WingetId "Google.Chrome" }
-            "2"  { Install-Software -Name "Mozilla Firefox" -WingetId "Mozilla.Firefox" }
-            "3"  { Install-Software -Name "Adobe Acrobat Reader DC" -WingetId "Adobe.Acrobat.Reader.64-bit" }
-            "4"  { Install-Software -Name "7-Zip" -WingetId "7zip.7zip" }
-            "5"  { Install-Software -Name "WinRAR" -WingetId "RARLab.WinRAR" }
-            "6"  { Install-Software -Name "RustDesk" -WingetId "RustDesk.RustDesk" }
-            "7"  { Install-Software -Name "TeamViewer" -WingetId "TeamViewer.TeamViewer" }
-            "8"  { Install-Software -Name "VLC Media Player" -WingetId "VideoLAN.VLC" }
-            "9"  { Install-Software -Name "Microsoft Office 365" -WingetId "Microsoft.Office" }
+            "1" { Install-Software -Name "Google Chrome" -WingetId "Google.Chrome" }
+            "2" { Install-Software -Name "Mozilla Firefox" -WingetId "Mozilla.Firefox" }
+            "3" { Install-Software -Name "Adobe Acrobat Reader DC" -WingetId "Adobe.Acrobat.Reader.64-bit" }
+            "4" { Install-Software -Name "7-Zip" -WingetId "7zip.7zip" }
+            "5" { Install-Software -Name "WinRAR" -WingetId "RARLab.WinRAR" }
+            "6" { Install-Software -Name "RustDesk" -WingetId "RustDesk.RustDesk" }
+            "7" { Install-Software -Name "TeamViewer" -WingetId "TeamViewer.TeamViewer" }
+            "8" { Install-Software -Name "VLC Media Player" -WingetId "VideoLAN.VLC" }
+            "9" { Install-Software -Name "Microsoft Office 365" -WingetId "Microsoft.Office" }
             "10" { Install-Software -Name "LibreOffice" -WingetId "TheDocumentFoundation.LibreOffice" }
             "11" { Install-Software -Name "Notepad++" -WingetId "Notepad++.Notepad++" }
             "12" { Install-Software -Name "Visual Studio Code" -WingetId "Microsoft.VisualStudioCode" }
@@ -198,13 +199,13 @@ function Install-Software {
 
 function Install-AllEssentialSoftware {
     $essentialSoftware = @(
-        @{Name = "Google Chrome"; Id = "Google.Chrome"},
-        @{Name = "Adobe Acrobat Reader"; Id = "Adobe.Acrobat.Reader.64-bit"},
-        @{Name = "7-Zip"; Id = "7zip.7zip"},
-        @{Name = "RustDesk"; Id = "RustDesk.RustDesk"},
-        @{Name = "VLC Media Player"; Id = "VideoLAN.VLC"},
-        @{Name = "Notepad++"; Id = "Notepad++.Notepad++"},
-        @{Name = "Microsoft Teams"; Id = "Microsoft.Teams"}
+        @{Name = "Google Chrome"; Id = "Google.Chrome" },
+        @{Name = "Adobe Acrobat Reader"; Id = "Adobe.Acrobat.Reader.64-bit" },
+        @{Name = "7-Zip"; Id = "7zip.7zip" },
+        @{Name = "RustDesk"; Id = "RustDesk.RustDesk" },
+        @{Name = "VLC Media Player"; Id = "VideoLAN.VLC" },
+        @{Name = "Notepad++"; Id = "Notepad++.Notepad++" },
+        @{Name = "Microsoft Teams"; Id = "Microsoft.Teams" }
     )
 
     Write-Log "Iniciando instalação de todos os programas essenciais..." -Level Info
@@ -244,18 +245,18 @@ function Show-GPOMenu {
         $choice = Read-Host "Escolha uma opção"
 
         switch ($choice) {
-            "1"  { Set-WindowsUpdate -Enable $false }
-            "2"  { Set-WindowsUpdate -Enable $true }
-            "3"  { Set-UAC -Enable $false }
-            "4"  { Set-UAC -Enable $true }
-            "5"  { Set-PasswordPolicy }
-            "6"  { Set-USBStorage -Enable $false }
-            "7"  { Set-USBStorage -Enable $true }
-            "8"  { Configure-Firewall }
-            "9"  { Set-RemoteDesktop -Enable $false }
+            "1" { Set-WindowsUpdate -Enable $false }
+            "2" { Set-WindowsUpdate -Enable $true }
+            "3" { Set-UAC -Enable $false }
+            "4" { Set-UAC -Enable $true }
+            "5" { Set-PasswordPolicy }
+            "6" { Set-USBStorage -Enable $false }
+            "7" { Set-USBStorage -Enable $true }
+            "8" { Configure-Firewall }
+            "9" { Set-RemoteDesktop -Enable $false }
             "10" { Set-RemoteDesktop -Enable $true }
             "11" { Export-LocalPolicies }
-            "0"  { return }
+            "0" { return }
             default { Write-Log "Opção inválida!" -Level Warning }
         }
 
@@ -363,13 +364,13 @@ function Configure-Firewall {
 
     try {
         # Habilitar firewall para todos os perfis
-        Set-NetFirewallProfile -Profile Domain,Public,Private -Enabled True
+        Set-NetFirewallProfile -Profile Domain, Public, Private -Enabled True
 
         # Bloquear conexões de entrada por padrão
-        Set-NetFirewallProfile -Profile Domain,Public,Private -DefaultInboundAction Block
+        Set-NetFirewallProfile -Profile Domain, Public, Private -DefaultInboundAction Block
 
         # Permitir conexões de saída
-        Set-NetFirewallProfile -Profile Domain,Public,Private -DefaultOutboundAction Allow
+        Set-NetFirewallProfile -Profile Domain, Public, Private -DefaultOutboundAction Allow
 
         Write-Log "Firewall configurado com sucesso!" -Level Success
         Write-Log "  - Todos os perfis habilitados" -Level Info
@@ -449,16 +450,16 @@ function Show-UserManagementMenu {
         $choice = Read-Host "Escolha uma opção"
 
         switch ($choice) {
-            "1"  { New-LocalUser_Interactive -IsAdmin $false }
-            "2"  { New-LocalUser_Interactive -IsAdmin $true }
-            "3"  { Get-LocalUsersList }
-            "4"  { Remove-LocalUser_Interactive }
-            "5"  { Set-UserPassword_Interactive }
-            "6"  { Join-DomainInteractive }
-            "7"  { Get-DomainStatus }
-            "8"  { New-ADUser_Interactive }
-            "9"  { New-BulkUsers }
-            "0"  { return }
+            "1" { New-LocalUser_Interactive -IsAdmin $false }
+            "2" { New-LocalUser_Interactive -IsAdmin $true }
+            "3" { Get-LocalUsersList }
+            "4" { Remove-LocalUser_Interactive }
+            "5" { Set-UserPassword_Interactive }
+            "6" { Join-DomainInteractive }
+            "7" { Get-DomainStatus }
+            "8" { New-ADUser_Interactive }
+            "9" { New-BulkUsers }
+            "0" { return }
             default { Write-Log "Opção inválida!" -Level Warning }
         }
 
@@ -625,16 +626,16 @@ function New-ADUser_Interactive {
 
     try {
         New-ADUser -Name $displayName `
-                   -GivenName $firstName `
-                   -Surname $lastName `
-                   -SamAccountName $username `
-                   -UserPrincipalName "$username@$((Get-ADDomain).DNSRoot)" `
-                   -EmailAddress $email `
-                   -Path $ou `
-                   -AccountPassword $password `
-                   -Enabled $true `
-                   -ChangePasswordAtLogon $true `
-                   -ErrorAction Stop
+            -GivenName $firstName `
+            -Surname $lastName `
+            -SamAccountName $username `
+            -UserPrincipalName "$username@$((Get-ADDomain).DNSRoot)" `
+            -EmailAddress $email `
+            -Path $ou `
+            -AccountPassword $password `
+            -Enabled $true `
+            -ChangePasswordAtLogon $true `
+            -ErrorAction Stop
 
         Write-Log "Usuário AD '$username' criado com sucesso!" -Level Success
     }
@@ -654,12 +655,35 @@ function New-BulkUsers {
         return
     }
 
+    Write-Host "`nOpções de Senha:"
+    Write-Host "[1] Definir uma senha única para todos (Manual)"
+    Write-Host "[2] Gerar senhas aleatórias (Recomendado/Seguro)"
+    $pwdChoice = Read-Host "Escolha uma opção"
+
+    $manualPassword = $null
+    if ($pwdChoice -eq "1") {
+        $manualPassword = Read-Host "Digite a senha padrão" -AsSecureString
+    }
+
     try {
         $users = Import-Csv -Path $csvPath
         $count = 0
 
         foreach ($user in $users) {
-            $password = ConvertTo-SecureString "Temp@123456" -AsPlainText -Force
+            $password = $null
+            $displayPwd = ""
+
+            if ($pwdChoice -eq "1") {
+                $password = $manualPassword
+                $displayPwd = "( Definida Manualmente )"
+            }
+            else {
+                # Gerar senha aleatória forte (14 caracteres, incluindo especiais)
+                $charSet = 33..126
+                $rngPwd = -join ($charSet | Get-Random -Count 14 | ForEach-Object { [char]$_ })
+                $password = ConvertTo-SecureString $rngPwd -AsPlainText -Force
+                $displayPwd = $rngPwd
+            }
 
             try {
                 New-LocalUser -Name $user.Username -Password $password -FullName $user.FullName -Description $user.Description -ErrorAction Stop
@@ -670,6 +694,10 @@ function New-BulkUsers {
 
                 $count++
                 Write-Log "Usuário '$($user.Username)' criado com sucesso!" -Level Success
+                
+                if ($pwdChoice -ne "1") {
+                    Write-Host "    -> Senha: $displayPwd" -ForegroundColor Cyan
+                }
             }
             catch {
                 Write-Log "Erro ao criar usuário '$($user.Username)': $_" -Level Error
@@ -677,7 +705,9 @@ function New-BulkUsers {
         }
 
         Write-Log "`n$count usuário(s) criado(s) com sucesso!" -Level Success
-        Write-Log "Senha padrão: Temp@123456 (solicite aos usuários que alterem!)" -Level Warning
+        if ($pwdChoice -eq "1") {
+            Write-Log "Senha padrão aplicada. Solicite aos usuários que alterem no primeiro login." -Level Warning
+        }
     }
     catch {
         Write-Log "Erro ao processar arquivo CSV: $_" -Level Error
@@ -711,17 +741,17 @@ function Show-SecurityMenu {
         $choice = Read-Host "Escolha uma opção"
 
         switch ($choice) {
-            "1"  { Test-WindowsDefender }
-            "2"  { Test-WindowsUpdates }
-            "3"  { Test-FirewallStatus }
-            "4"  { Test-PasswordPolicy }
-            "5"  { Get-UnnecessaryServices }
-            "6"  { Get-OpenPorts }
-            "7"  { Get-NetworkShares }
-            "8"  { Test-BlankPasswords }
-            "9"  { Get-SecurityReport }
+            "1" { Test-WindowsDefender }
+            "2" { Test-WindowsUpdates }
+            "3" { Test-FirewallStatus }
+            "4" { Test-PasswordPolicy }
+            "5" { Get-UnnecessaryServices }
+            "6" { Get-OpenPorts }
+            "7" { Get-NetworkShares }
+            "8" { Test-BlankPasswords }
+            "9" { Get-SecurityReport }
             "10" { Start-DefenderScan }
-            "0"  { return }
+            "0" { return }
             default { Write-Log "Opção inválida!" -Level Warning }
         }
 
@@ -740,14 +770,16 @@ function Test-WindowsDefender {
         Write-Host "Antivírus habilitado: " -NoNewline
         if ($defenderStatus.AntivirusEnabled) {
             Write-Host "Sim" -ForegroundColor Green
-        } else {
+        }
+        else {
             Write-Host "Não" -ForegroundColor Red
         }
 
         Write-Host "Proteção em tempo real: " -NoNewline
         if ($defenderStatus.RealTimeProtectionEnabled) {
             Write-Host "Ativa" -ForegroundColor Green
-        } else {
+        }
+        else {
             Write-Host "Inativa" -ForegroundColor Red
         }
 
@@ -799,7 +831,8 @@ function Test-FirewallStatus {
             Write-Host "  Habilitado: " -NoNewline
             if ($profile.Enabled) {
                 Write-Host "Sim" -ForegroundColor Green
-            } else {
+            }
+            else {
                 Write-Host "Não" -ForegroundColor Red
             }
             Write-Host "  Entrada: $($profile.DefaultInboundAction)" -ForegroundColor Gray
@@ -853,9 +886,9 @@ function Get-OpenPorts {
     Write-Host "`n--- Portas Abertas ---`n" -ForegroundColor Yellow
 
     try {
-        $connections = Get-NetTCPConnection | Where-Object {$_.State -eq "Listen"} |
-                       Select-Object LocalAddress, LocalPort, State |
-                       Sort-Object LocalPort -Unique
+        $connections = Get-NetTCPConnection | Where-Object { $_.State -eq "Listen" } |
+        Select-Object LocalAddress, LocalPort, State |
+        Sort-Object LocalPort -Unique
 
         $connections | Format-Table -AutoSize
     }
@@ -868,7 +901,7 @@ function Get-NetworkShares {
     Write-Host "`n--- Compartilhamentos de Rede ---`n" -ForegroundColor Yellow
 
     try {
-        $shares = Get-SmbShare | Where-Object {$_.Name -notlike "*$"}
+        $shares = Get-SmbShare | Where-Object { $_.Name -notlike "*$" }
 
         if ($shares.Count -eq 0) {
             Write-Log "Nenhum compartilhamento encontrado." -Level Info
@@ -886,13 +919,13 @@ function Test-BlankPasswords {
     Write-Host "`n--- Verificando Contas com Senha em Branco ---`n" -ForegroundColor Yellow
 
     try {
-        $users = Get-LocalUser | Where-Object {$_.Enabled -eq $true}
+        $users = Get-LocalUser | Where-Object { $_.Enabled -eq $true }
         $found = $false
 
         foreach ($user in $users) {
-            # Esta verificação é limitada no PowerShell, mas podemos verificar se PasswordRequired está desabilitado
-            $userWMI = Get-WmiObject -Class Win32_UserAccount -Filter "Name='$($user.Name)' AND LocalAccount=True"
-            if ($userWMI.PasswordRequired -eq $false) {
+            # Verificar se PasswordRequired está desabilitado usando CIM
+            $userCim = Get-CimInstance -ClassName Win32_UserAccount -Filter "Name='$($user.Name)' AND LocalAccount=True"
+            if ($userCim.PasswordRequired -eq $false) {
                 Write-Host "  [!] " -NoNewline -ForegroundColor Red
                 Write-Host "Usuário '$($user.Name)' não requer senha!" -ForegroundColor Yellow
                 $found = $true
@@ -999,17 +1032,17 @@ function Show-MaintenanceMenu {
         $choice = Read-Host "Escolha uma opção"
 
         switch ($choice) {
-            "1"  { Start-DiskCleanup }
-            "2"  { Start-SFCScan }
-            "3"  { Start-DiskCheck }
-            "4"  { Start-DiskOptimization }
-            "5"  { Clear-EventLogs }
-            "6"  { Get-SystemInformation }
-            "7"  { Get-StartupPrograms }
-            "8"  { Test-DiskHealth }
-            "9"  { Backup-Drivers }
+            "1" { Start-DiskCleanup }
+            "2" { Start-SFCScan }
+            "3" { Start-DiskCheck }
+            "4" { Start-DiskOptimization }
+            "5" { Clear-EventLogs }
+            "6" { Get-SystemInformation }
+            "7" { Get-StartupPrograms }
+            "8" { Test-DiskHealth }
+            "9" { Backup-Drivers }
             "10" { New-RestorePoint }
-            "0"  { return }
+            "0" { return }
             default { Write-Log "Opção inválida!" -Level Warning }
         }
 
@@ -1029,12 +1062,12 @@ function Start-DiskCleanup {
         $tempPath = [System.IO.Path]::GetTempPath()
         Write-Log "Limpando: $tempPath" -Level Info
         Get-ChildItem -Path $tempPath -Recurse -Force -ErrorAction SilentlyContinue |
-            Remove-Item -Force -Recurse -ErrorAction SilentlyContinue
+        Remove-Item -Force -Recurse -ErrorAction SilentlyContinue
 
         # Limpar pasta Temp do Windows
         Write-Log "Limpando: C:\Windows\Temp" -Level Info
         Get-ChildItem -Path "C:\Windows\Temp" -Recurse -Force -ErrorAction SilentlyContinue |
-            Remove-Item -Force -Recurse -ErrorAction SilentlyContinue
+        Remove-Item -Force -Recurse -ErrorAction SilentlyContinue
 
         # Limpar lixeira
         Write-Log "Esvaziando lixeira..." -Level Info
@@ -1163,13 +1196,13 @@ function Get-StartupPrograms {
     try {
         Write-Host "`nREGISTRO (HKLM):" -ForegroundColor Cyan
         $startupHKLM = Get-ItemProperty "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Run"
-        $startupHKLM.PSObject.Properties | Where-Object {$_.Name -notlike "PS*"} | ForEach-Object {
+        $startupHKLM.PSObject.Properties | Where-Object { $_.Name -notlike "PS*" } | ForEach-Object {
             Write-Host "  - $($_.Name): $($_.Value)" -ForegroundColor Gray
         }
 
         Write-Host "`nREGISTRO (HKCU):" -ForegroundColor Cyan
         $startupHKCU = Get-ItemProperty "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Run"
-        $startupHKCU.PSObject.Properties | Where-Object {$_.Name -notlike "PS*"} | ForEach-Object {
+        $startupHKCU.PSObject.Properties | Where-Object { $_.Name -notlike "PS*" } | ForEach-Object {
             Write-Host "  - $($_.Name): $($_.Value)" -ForegroundColor Gray
         }
 
